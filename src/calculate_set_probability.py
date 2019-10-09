@@ -40,7 +40,9 @@ def check_set(cards: numpy.ndarray, set_num: int = 3, return_first: bool = False
     return found_sets
 
 
-def calculate_set_probability(num_of_try: int = 100000):
+def calculate_set_probability(num_of_try: int = 100000,
+                              precision: int = 5, 
+                              print_result: bool = False):
     _logger.info('start calculation')
     result_counter = Counter()
     for trial in range(num_of_try):
@@ -56,10 +58,14 @@ def calculate_set_probability(num_of_try: int = 100000):
     probabilities = {}
     for played, count in result_counter.items():
         probabilities[played] = count / num_of_try
-    print('probabilities...\nplayed\tprob')
-    for played, prob in sorted(probabilities.items(), key=lambda x: x[0]):
-        print(f'{played:>3g}\t{prob:>5.3f}')
+    if print_result:
+        print('probabilities...\nplayed\tprob')
+        for played, prob in sorted(probabilities.items(), key=lambda x: x[0]):
+            print(f'{played:>3g}\t{prob:>{precision+2}.{precision}f}')
+    return probabilities
 
 
 if __name__ == '__main__':
-    calculate_set_probability(100)
+    calculate_set_probability(100,
+                              precision=5, 
+                              print_result=True)
